@@ -1,48 +1,87 @@
-BABYLON.SceneLoader.Append(
-    "model/",       // Ścieżka do folderu z modelem
-    "model.gltf",   // Nazwa pliku modelu
-    scene,
-    function () {
-        console.log("Model załadowany!");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steve Model Viewer - Babylon.js</title>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylon.glTF2FileLoader.min.js"></script>
+</head>
+<body>
+    <canvas id="renderCanvas" style="width: 100%; height: 100%;"></canvas>
+    <script>
+        // Canvas i silnik
+        const canvas = document.getElementById("renderCanvas");
+        const engine = new BABYLON.Engine(canvas, true);
 
-        // Wylistowanie dostępnych siatek
-        scene.meshes.forEach(mesh => {
-            console.log("Znaleziono mesh: " + mesh.name);
-        });
+        // Scena
+        const scene = new BABYLON.Scene(engine);
 
-        // Przypisanie tekstury na każdą siatkę, którą chcesz zaktualizować
-        const meshesToTexture = [
-            "Head",
-            "Body",
-            "Right Arm",
-            "Left Arm",
-            "Right Leg",
-            "Left Leg",
-            "Hat Layer",      // Jeśli chcesz nałożyć teksturę na nakrycie głowy
-            "Body Layer",     // Warstwa ciała (jeśli jest oddzielna)
-            "Right Arm Layer",// Warstwa prawej ręki
-            "Left Arm Layer", // Warstwa lewej ręki
-            "Right Leg Layer",// Warstwa prawej nogi
-            "Left Leg Layer"  // Warstwa lewej nogi
-        ];
+        // Kamera
+        const camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 4, 5, BABYLON.Vector3.Zero(), scene);
+        camera.attachControl(canvas, true);
 
-        meshesToTexture.forEach(meshName => {
-            const mesh = scene.getMeshByName(meshName);
-            if (mesh) {
-                const material = new BABYLON.StandardMaterial("textureMaterial", scene);
-                material.diffuseTexture = new BABYLON.Texture("img/steve.png", scene); // Ścieżka do tekstury
-                mesh.material = material;
-                console.log("Tekstura została nałożona na mesh: " + meshName);
-            } else {
-                console.error("Nie znaleziono siatki o nazwie: " + meshName);
+        // Światło
+        const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0), scene);
+
+        // Ładowanie modelu GLTF
+        BABYLON.SceneLoader.Append(
+            "model/",       // Ścieżka do folderu z modelem
+            "model.gltf",   // Nazwa pliku modelu
+            scene,
+            function () {
+                console.log("Model załadowany!");
+
+                // Wylistowanie dostępnych siatek
+                scene.meshes.forEach(mesh => {
+                    console.log("Znaleziono mesh: " + mesh.name);
+                });
+
+                // Przypisanie tekstury na każdą siatkę, którą chcesz zaktualizować
+                const meshesToTexture = [
+                    "Head",
+                    "Body",
+                    "Right Arm",
+                    "Left Arm",
+                    "Right Leg",
+                    "Left Leg",
+                    "Hat Layer",      // Jeśli chcesz nałożyć teksturę na nakrycie głowy
+                    "Body Layer",     // Warstwa ciała (jeśli jest oddzielna)
+                    "Right Arm Layer",// Warstwa prawej ręki
+                    "Left Arm Layer", // Warstwa lewej ręki
+                    "Right Leg Layer",// Warstwa prawej nogi
+                    "Left Leg Layer"  // Warstwa lewej nogi
+                ];
+
+                meshesToTexture.forEach(meshName => {
+                    const mesh = scene.getMeshByName(meshName);
+                    if (mesh) {
+                        const material = new BABYLON.StandardMaterial("textureMaterial", scene);
+                        material.diffuseTexture = new BABYLON.Texture("img/steve.png", scene); // Ścieżka do tekstury
+                        mesh.material = material;
+                        console.log("Tekstura została nałożona na mesh: " + meshName);
+                    } else {
+                        console.error("Nie znaleziono siatki o nazwie: " + meshName);
+                    }
+                });
+            },
+            function (progress) {
+                console.log("Ładowanie:", progress.loaded / progress.total * 100, "%");
+            },
+            function (error) {
+                console.error("Błąd ładowania modelu:", error.message);
             }
-        });
-    },
-    function (progress) {
-        console.log("Ładowanie:", progress.loaded / progress.total * 100, "%");
-    },
-    function (error) {
-        console.error("Błąd ładowania modelu:", error.message);
-    }
-);
+        );
 
+        // Renderowanie
+        engine.runRenderLoop(() => {
+            scene.render();
+        });
+
+        // Zmiana rozmiaru okna
+        window.addEventListener("resize", () => {
+            engine.resize();
+        });
+    </script>
+</body>
+</html>
