@@ -3,30 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Model Viewer with 180° Rotation - A-Frame</title>
+    <title>Model Viewer - A-Frame</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <style>
+        /* Stylowanie przycisków */
+        .button {
+            position: absolute;
+            top: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .left-button {
+            left: 20px;
+        }
+
+        .right-button {
+            right: 20px;
+        }
+    </style>
 </head>
 <body>
     <a-scene>
         <!-- Definicja kamery -->
-        <a-camera position="0 1.6 3" look-controls="pointerLockEnabled: true;"></a-camera>
+        <a-camera position="0 1.6 3"></a-camera>
 
-        <!-- Model 3D z animacją obracania o 180 stopni w lewo i prawo -->
+        <!-- Model 3D -->
         <a-entity id="model" gltf-model="url(model/model.gltf)" scale="1 1 1" position="0 0 0">
-            <!-- Opcjonalna tekstura na modelu -->
+            <!-- Możliwa tekstura na modelu -->
             <a-entity material="src: url(img/steve.png);" scale="1 1 1"></a-entity>
-
-            <!-- Animacja obracania modelu o 180 stopni lewo/prawo -->
-            <a-animation 
-                attribute="rotation" 
-                to="0 180 0" 
-                dur="2000" 
-                direction="alternate" 
-                repeat="indefinite"></a-animation>
         </a-entity>
 
-        <!-- Dodanie światła z przodu -->
+        <!-- Światło -->
         <a-light type="directional" intensity="1" position="0 3 3" target="#model"></a-light>
     </a-scene>
+
+    <!-- Przycisk lewo -->
+    <button class="button left-button" onclick="rotateModel('left')">← Obróć w lewo</button>
+
+    <!-- Przycisk prawo -->
+    <button class="button right-button" onclick="rotateModel('right')">Obróć w prawo →</button>
+
+    <script>
+        // Funkcja do obracania modelu w lewo lub w prawo
+        function rotateModel(direction) {
+            const model = document.querySelector("#model");
+            let rotation = model.getAttribute("rotation");
+            let newRotation;
+
+            if (direction === 'left') {
+                newRotation = { x: rotation.x, y: rotation.y - 180, z: rotation.z };
+            } else if (direction === 'right') {
+                newRotation = { x: rotation.x, y: rotation.y + 180, z: rotation.z };
+            }
+
+            model.setAttribute("rotation", newRotation);
+        }
+    </script>
 </body>
 </html>
