@@ -30,7 +30,7 @@ const textureLoader = new THREE.TextureLoader();
 let steve;
 
 loader.load(
-    'https://cdn.discordapp.com/attachments/795996267620728905/1314706000716103741/model.gltf',
+    'model/model.gltf',
     function (gltf) {
         steve = gltf.scene;
         console.log('Model załadowany:', steve);
