@@ -37,8 +37,8 @@
 
         <!-- Model 3D -->
         <a-entity id="model" gltf-model="url(model/model.gltf)" scale="1 1 1" position="0 0 0">
-            <!-- Możliwa tekstura na modelu -->
-            <a-entity material="src: url(img/jaskiniowiec_skin.png);" scale="1 1 1"></a-entity>
+            <!-- Przypisanie tekstury do modelu, jeśli model nie ma własnego materiału -->
+            <a-material src="url(img/jaskiniowiec_skin.png)"></a-material>
         </a-entity>
 
         <!-- Światła -->
