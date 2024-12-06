@@ -3,69 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steve Model Viewer - Three.js</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/GLTFLoader.js"></script>
+    <title>Steve Model Viewer - A-Frame</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 </head>
 <body>
-    <canvas id="webglCanvas" style="width: 100%; height: 100%;"></canvas>
-    <script>
-        // Tworzymy scenę
-        const scene = new THREE.Scene();
+    <a-scene>
+        <!-- Kamera -->
+        <a-camera position="0 1.6 0"></a-camera>
 
-        // Tworzymy kamerę
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 5;
+        <!-- Dodanie modelu 3D -->
+        <a-entity gltf-model="url(model/model.gltf)" scale="1 1 1" position="0 0 -3">
+            <a-entity 
+                material="src: url(img/steve.png);" 
+                scale="1 1 1"></a-entity>
+        </a-entity>
 
-        // Tworzymy render
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("webglCanvas") });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        // Dodajemy światło
-        const light = new THREE.AmbientLight(0x404040); // Soft white light
-        scene.add(light);
-
-        // Ładowanie modelu GLTF
-        const loader = new THREE.GLTFLoader();
-        loader.load(
-            'model/model.gltf', // Ścieżka do pliku GLTF
-            function (gltf) {
-                // Po załadowaniu modelu
-                scene.add(gltf.scene);
-                gltf.scene.scale.set(1, 1, 1); // Skala modelu (jeśli jest potrzebna)
-                gltf.scene.position.set(0, 0, 0); // Pozycja modelu (jeśli jest potrzebna)
-
-                // Nałożenie tekstury na model
-                const textureLoader = new THREE.TextureLoader();
-                textureLoader.load('img/steve.png', function (texture) {
-                    gltf.scene.traverse(function (child) {
-                        if (child.isMesh) {
-                            child.material.map = texture;
-                            child.material.needsUpdate = true;
-                        }
-                    });
-                    console.log("Tekstura została nałożona!");
-                });
-            },
-            undefined,
-            function (error) {
-                console.error("Błąd ładowania modelu:", error);
-            }
-        );
-
-        // Animacja
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        // Zmiana rozmiaru okna
-        window.addEventListener('resize', function () {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-        });
-    </script>
+        <!-- Światło -->
+        <a-light type="directional" intensity="1" position="2 4 -3"></a-light>
+    </a-scene>
 </body>
 </html>
