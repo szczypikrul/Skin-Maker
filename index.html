@@ -41,8 +41,15 @@
             <a-entity material="src: url(img/steve.png);" scale="1 1 1"></a-entity>
         </a-entity>
 
-        <!-- Światło -->
-        <a-light type="directional" intensity="1" position="0 3 3" target="#model"></a-light>
+        <!-- Światła -->
+        <!-- Ambient Light (ogólne światło) -->
+        <a-light type="ambient" color="#fff" intensity="0.5"></a-light>
+
+        <!-- Światło punktowe (z różnych kierunków) -->
+        <a-light type="point" position="2 2 2" intensity="0.8" target="#model"></a-light> <!-- Światło z góry -->
+        <a-light type="point" position="-2 2 2" intensity="0.8" target="#model"></a-light> <!-- Światło z lewej strony -->
+        <a-light type="point" position="0 2 -2" intensity="0.8" target="#model"></a-light> <!-- Światło z tyłu -->
+
     </a-scene>
 
     <!-- Przycisk lewo -->
