@@ -12,14 +12,18 @@
         <a-camera position="0 1.6 0"></a-camera>
 
         <!-- Dodanie modelu 3D -->
-        <a-entity gltf-model="url(model/model.gltf)" scale="1 1 1" position="0 0 -3">
+        <a-entity id="model" gltf-model="url(model/model.gltf)" scale="1 1 1" position="0 0 -3" rotation="0 0 0">
+            <!-- Nałożenie tekstury -->
             <a-entity 
                 material="src: url(img/steve.png);" 
                 scale="1 1 1"></a-entity>
         </a-entity>
 
-        <!-- Światło -->
-        <a-light type="directional" intensity="1" position="2 4 -3"></a-light>
+        <!-- Dodanie światła z przodu -->
+        <a-light type="directional" intensity="1" position="0 3 3" target="#model"></a-light>
+
+        <!-- Dajemy możliwość obracania modelu przez użytkownika -->
+        <a-entity id="rotateModel" rotation="0 1 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-entity>
     </a-scene>
 </body>
 </html>
