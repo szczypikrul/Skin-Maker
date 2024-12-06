@@ -32,12 +32,21 @@
             function () {
                 console.log("Model załadowany!");
 
-                // Po załadowaniu modelu, nakładamy teksturę
-                const mesh = scene.getMeshByName("MeshName"); // Zmień na prawdziwą nazwę siatki w modelu
+                // Wyświetlenie nazw siatek w konsoli (sprawdź nazwy)
+                scene.meshes.forEach(mesh => {
+                    console.log("Znaleziono mesh: " + mesh.name);
+                });
+
+                // Jeśli model ma określoną nazwę siatki, można przypisać teksturę
+                // Załóżmy, że siatka o nazwie "SteveMesh" istnieje w modelu
+                const mesh = scene.getMeshByName("SteveMesh"); // Zmień na rzeczywistą nazwę siatki
                 if (mesh) {
                     const material = new BABYLON.StandardMaterial("textureMaterial", scene);
                     material.diffuseTexture = new BABYLON.Texture("img/steve.png", scene);
                     mesh.material = material;
+                    console.log("Tekstura została nałożona na siatkę!");
+                } else {
+                    console.error("Nie znaleziono siatki o nazwie 'SteveMesh'");
                 }
             },
             function (progress) {
