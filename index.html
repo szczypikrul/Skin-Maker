@@ -10,7 +10,7 @@ BABYLON.SceneLoader.Append(
             console.log("Znaleziono mesh: " + mesh.name);
         });
 
-        // Przypisanie tekstury na każdą siatkę (np. dla głowy, ciała itd.)
+        // Przypisanie tekstury na każdą siatkę, którą chcesz zaktualizować
         const meshesToTexture = [
             "Head",
             "Body",
@@ -30,7 +30,7 @@ BABYLON.SceneLoader.Append(
             const mesh = scene.getMeshByName(meshName);
             if (mesh) {
                 const material = new BABYLON.StandardMaterial("textureMaterial", scene);
-                material.diffuseTexture = new BABYLON.Texture("img/steve.png", scene);
+                material.diffuseTexture = new BABYLON.Texture("img/steve.png", scene); // Ścieżka do tekstury
                 mesh.material = material;
                 console.log("Tekstura została nałożona na mesh: " + meshName);
             } else {
@@ -45,3 +45,4 @@ BABYLON.SceneLoader.Append(
         console.error("Błąd ładowania modelu:", error.message);
     }
 );
+
