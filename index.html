@@ -10,16 +10,33 @@ BABYLON.SceneLoader.Append(
             console.log("Znaleziono mesh: " + mesh.name);
         });
 
-        // Przypisanie tekstury na pierwszą siatkę (zmień nazwę siatki na odpowiednią)
-        const mesh = scene.getMeshByName("SteveMesh"); // Zmień na rzeczywistą nazwę siatki
-        if (mesh) {
-            const material = new BABYLON.StandardMaterial("textureMaterial", scene);
-            material.diffuseTexture = new BABYLON.Texture("img/steve.png", scene);
-            mesh.material = material;
-            console.log("Tekstura została nałożona na siatkę!");
-        } else {
-            console.error("Nie znaleziono siatki o nazwie 'SteveMesh'");
-        }
+        // Przypisanie tekstury na każdą siatkę (np. dla głowy, ciała itd.)
+        const meshesToTexture = [
+            "Head",
+            "Body",
+            "Right Arm",
+            "Left Arm",
+            "Right Leg",
+            "Left Leg",
+            "Hat Layer",      // Jeśli chcesz nałożyć teksturę na nakrycie głowy
+            "Body Layer",     // Warstwa ciała (jeśli jest oddzielna)
+            "Right Arm Layer",// Warstwa prawej ręki
+            "Left Arm Layer", // Warstwa lewej ręki
+            "Right Leg Layer",// Warstwa prawej nogi
+            "Left Leg Layer"  // Warstwa lewej nogi
+        ];
+
+        meshesToTexture.forEach(meshName => {
+            const mesh = scene.getMeshByName(meshName);
+            if (mesh) {
+                const material = new BABYLON.StandardMaterial("textureMaterial", scene);
+                material.diffuseTexture = new BABYLON.Texture("img/steve.png", scene);
+                mesh.material = material;
+                console.log("Tekstura została nałożona na mesh: " + meshName);
+            } else {
+                console.error("Nie znaleziono siatki o nazwie: " + meshName);
+            }
+        });
     },
     function (progress) {
         console.log("Ładowanie:", progress.loaded / progress.total * 100, "%");
