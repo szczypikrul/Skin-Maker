@@ -49,6 +49,13 @@
         window.addEventListener("resize", () => {
             engine.resize();
         });
+
+        BABYLON.SceneLoader.Append("model/", "model.gltf", scene, function (scene) {
+            const mesh = scene.getMeshByName("MeshName"); // Nazwa siatki w modelu
+            const material = new BABYLON.StandardMaterial("textureMaterial", scene);
+            material.diffuseTexture = new BABYLON.Texture("img/steve.png", scene);
+            mesh.material = material;
+        });
     </script>
 </body>
 </html>
