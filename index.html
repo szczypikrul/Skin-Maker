@@ -36,13 +36,11 @@
         <a-camera position="0 1.6 3"></a-camera>
 
         <!-- Model 3D -->
-        <a-entity id="model" gltf-model="url(model/model.gltf)" scale="1 1 1" position="0 0 0">
-            <!-- Przypisanie tekstury do modelu, jeśli model nie ma własnego materiału -->
-            <a-material src="url(img/jaskiniowiec_skin.png)"></a-material>
+        <a-entity id="model" gltf-model="url(model/model.gltf)" scale="1 1 1" position="0 0 0" 
+            material="src: url(img/jaskiniowiec_skin.png); repeat: true;">
         </a-entity>
 
         <!-- Światła -->
-        <!-- Ambient Light (ogólne światło) -->
         <a-light type="ambient" color="#fff" intensity="1"></a-light>
 
         <!-- Światło punktowe (z różnych kierunków) -->
