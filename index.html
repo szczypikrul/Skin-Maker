@@ -31,6 +31,14 @@
             scene,
             function () {
                 console.log("Model załadowany!");
+
+                // Po załadowaniu modelu, nakładamy teksturę
+                const mesh = scene.getMeshByName("MeshName"); // Zmień na prawdziwą nazwę siatki w modelu
+                if (mesh) {
+                    const material = new BABYLON.StandardMaterial("textureMaterial", scene);
+                    material.diffuseTexture = new BABYLON.Texture("img/steve.png", scene);
+                    mesh.material = material;
+                }
             },
             function (progress) {
                 console.log("Ładowanie:", progress.loaded / progress.total * 100, "%");
@@ -48,13 +56,6 @@
         // Zmiana rozmiaru okna
         window.addEventListener("resize", () => {
             engine.resize();
-        });
-
-        BABYLON.SceneLoader.Append("model/", "model.gltf", scene, function (scene) {
-            const mesh = scene.getMeshByName("MeshName"); // Nazwa siatki w modelu
-            const material = new BABYLON.StandardMaterial("textureMaterial", scene);
-            material.diffuseTexture = new BABYLON.Texture("img/steve.png", scene);
-            mesh.material = material;
         });
     </script>
 </body>
