@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steve Model Viewer - A-Frame</title>
+    <title>Model Viewer with Rotating Camera - A-Frame</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 </head>
 <body>
     <a-scene>
-        <!-- Kamera -->
-        <a-camera position="0 1.6 0"></a-camera>
+        <!-- Definicja kamery, która będzie obracać się wokół modelu -->
+        <a-camera id="camera" position="0 1.6 3" look-controls="pointerLockEnabled: true;"></a-camera>
 
-        <!-- Dodanie modelu 3D -->
-        <a-entity id="model" gltf-model="url(model/model.gltf)" scale="1 1 1" position="0 0 -3" rotation="0 0 0">
-            <!-- Nałożenie tekstury -->
+        <!-- Model 3D (plik GLTF) -->
+        <a-entity id="model" gltf-model="url(model/model.gltf)" scale="1 1 1" position="0 0 0">
             <a-entity 
                 material="src: url(img/steve.png);" 
                 scale="1 1 1"></a-entity>
@@ -22,8 +21,9 @@
         <!-- Dodanie światła z przodu -->
         <a-light type="directional" intensity="1" position="0 3 3" target="#model"></a-light>
 
-        <!-- Dajemy możliwość obracania modelu przez użytkownika -->
-        <a-entity id="rotateModel" rotation="0 1 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-entity>
+        <!-- Animacja obracania kamery wokół osi modelu (ustawienie obracania w pętli) -->
+        <a-entity id="rotateCamera" rotation="0 0 0"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-entity>
     </a-scene>
 </body>
 </html>
