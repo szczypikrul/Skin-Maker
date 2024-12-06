@@ -29,6 +29,9 @@
 </head>
 <body>
     <a-scene>
+        <!-- Tło jako grafika -->
+        <a-sky src="url(https://i.pinimg.com/736x/11/cd/ed/11cded915eb64199b9f01e7dfb346745.jpg)"></a-sky> <!-- Zmień "tło.jpg" na ścieżkę do swojej grafiki -->
+
         <!-- Definicja kamery -->
         <a-camera position="0 1.6 3"></a-camera>
 
@@ -56,9 +59,9 @@
             let newRotation;
 
             if (direction === 'left') {
-                newRotation = { x: rotation.x, y: rotation.y - 180, z: rotation.z };
+                newRotation = { x: rotation.x, y: rotation.y - 30, z: rotation.z };
             } else if (direction === 'right') {
-                newRotation = { x: rotation.x, y: rotation.y + 180, z: rotation.z };
+                newRotation = { x: rotation.x, y: rotation.y + 30, z: rotation.z };
             }
 
             model.setAttribute("rotation", newRotation);
