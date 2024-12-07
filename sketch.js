@@ -8,11 +8,6 @@ function preload() {
 
 function setup() {
   createCanvas(400, 400, WEBGL);
-
-  // Ustawienia tekstury dla lepszej jakości
-  //textureWrap(REPEAT); // Powtarzanie tekstury
-  textureMode(NORMAL); // Tryb tekstury w koordynatach normalnych
-  noSmooth();          // Wyłącza antyaliasing
 }
 
 function draw() {
@@ -28,5 +23,6 @@ function draw() {
 
   // Renderuj model z teksturą
   texture(marioUV); // Tekstura musi być nałożona przed `model()`
+  textureMode(IMAGE);
   model(mario);
 }
