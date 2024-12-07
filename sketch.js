@@ -3,7 +3,7 @@ let marioUV;
 
 function preload() {
   mario = loadModel('model/model.obj', true);
-  marioUV = loadImage('img/jaskiniowiec_skin.png');
+  marioUV = loadImage('img/steve.png');
 }
 
 function setup() {
