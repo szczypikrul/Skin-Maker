@@ -19,8 +19,8 @@ function draw() {
   orbitControl(5)
   rotateZ(PI)
   texture(marioUV);
-
-  model(mario);
+  
   scale(2); // Dwukrotnie zwiększa skalę modelu
+  model(mario);
 
 }
