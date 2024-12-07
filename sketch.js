@@ -4,6 +4,8 @@ let marioUV;
 function preload() {
   mario = loadModel('model/model.obj', true);
   marioUV = loadImage('img/steve.png');
+  marioUV.setInterpolationNearest(); // Wymusza najbliższy filtr interpolacji dla ostrości
+
 }
 
 function setup() {
@@ -17,6 +19,7 @@ function draw() {
   orbitControl(5)
   rotateZ(PI)
   texture(marioUV);
+
   model(mario);
   scale(2); // Dwukrotnie zwiększa skalę modelu
 
