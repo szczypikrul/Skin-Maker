@@ -23,6 +23,6 @@ function draw() {
 
   // Renderuj model z teksturą
   texture(marioUV); // Tekstura musi być nałożona przed `model()`
-  textureMode(IMAGE);
+  textureMode(NORMAL);
   model(mario);
 }
