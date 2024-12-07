@@ -68,8 +68,10 @@
 
             if (direction === 'left') {
                 newRotation = { x: rotation.x, y: rotation.y - 30, z: rotation.z };
+                textureChange(element);
             } else if (direction === 'right') {
                 newRotation = { x: rotation.x, y: rotation.y + 30, z: rotation.z };
+                textureChange(element);
             }
 
             model.setAttribute("rotation", newRotation);
