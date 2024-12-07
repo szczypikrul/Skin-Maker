@@ -8,7 +8,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(400, 400, WEBGL);
+  createCanvas(800, 800, WEBGL);
 }
 
 function draw() {
@@ -19,7 +19,7 @@ function draw() {
   rotateZ(PI)
   texture(marioUV);
   
-  scale(0.1); // Dwukrotnie zwiększa skalę modelu
+  scale(5); // Dwukrotnie zwiększa skalę modelu
   model(mario);
 
 }
