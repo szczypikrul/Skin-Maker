@@ -36,10 +36,12 @@
         <a-camera position="0 1.6 3"></a-camera>
         <a-assets>
             <img id="my-texture" src="img/jaskiniowiec_skin.png">
+            <a-asset-item id="obj" src="model/model.obj"></a-asset-item>
+            <a-asset-item id="mtl" src="model/model.mtl"></a-asset-item>
         </a-assets>
 
         <!-- Model 3D -->
-        <a-entity id="model" obj-model="url(model/model.obj)" scale="1 1 1" position="0 0 0" rotation="0 180 0" color="red"
+        <a-entity id="model" obj-model="obj: #obj; mtl:#mtl" scale="1 1 1" position="0 0 0" rotation="0 180 0" color="red"
            material="src: #my-texture">
         </a-entity>
 
