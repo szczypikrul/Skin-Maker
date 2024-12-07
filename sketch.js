@@ -2,8 +2,8 @@ let mario;
 let marioUV;
 
 function preload() {
-  mario = loadModel('mario.obj', true);
-  marioUV = loadImage('marioUV2.png');
+  mario = loadModel('model/model.obj', true);
+  marioUV = loadImage('img/jaskiniowiec_skin.png');
 }
 
 function setup() {
