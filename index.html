@@ -34,10 +34,13 @@
 
         <!-- Definicja kamery -->
         <a-camera position="0 1.6 3"></a-camera>
+        <a-assets>
+            <img id="my-texture" src="img/jaskiniowiec_skin.png">
+        </a-assets>
 
         <!-- Model 3D -->
         <a-entity id="model" gltf-model="url(model/model.gltf)" scale="1 1 1" position="0 0 0" rotation="0 180 0" color="red"
-           material="shader: flat; src: url(img/jaskiniowiec_skin.png)">
+           material="src: #my-texture">
         </a-entity>
 
         <!-- Światła -->
