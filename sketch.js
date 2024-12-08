@@ -10,6 +10,7 @@ function preload() {
 function setup() {
   createCanvas(400, 400, WEBGL);
   blendMode(BLEND);
+  tex = canvas.getTexture(marioUV);
 }
 
 function draw() {
@@ -19,7 +20,7 @@ function draw() {
   orbitControl(5);
   rotateZ(PI);
   texture(marioUV);
-  marioUV.setInterpolation(NEAREST, NEAREST);
+  tex.setInterpolation(NEAREST, NEAREST);
   model(mario);
 
 }
