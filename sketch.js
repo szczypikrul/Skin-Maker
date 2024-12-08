@@ -14,7 +14,7 @@ function draw() {
   stroke(0);
   strokeWeight(0);
   background(100);
-  orbitControl(5)
+  orbitControl(5);
   rotateZ(PI);
  
   model(mario);
