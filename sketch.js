@@ -16,7 +16,8 @@ function draw() {
   background(100);
   orbitControl(5)
   rotateZ(PI);
-  filter(BLUR, 10);
+ 
   model(mario);
   texture(marioUV);
+  filter(BLUR, 10);
 }
