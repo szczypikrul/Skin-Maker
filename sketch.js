@@ -18,8 +18,8 @@ function draw() {
   background(100);
   orbitControl(5);
   rotateZ(PI);
- 
-  model(mario);
   texture(marioUV);
   marioUV.setInterpolation(NEAREST, NEAREST);
+  model(mario);
+
 }
