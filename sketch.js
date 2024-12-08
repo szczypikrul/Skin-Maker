@@ -1,26 +1,29 @@
-let mario; 
+let mario;
 let marioUV;
 
 function preload() {
+  // Ładujemy model i teksturę
   mario = loadModel('model/model.obj', true);
   marioUV = loadImage('img/steve.png');
-  
 }
 
 function setup() {
   createCanvas(400, 400, WEBGL);
-  blendMode(BLEND);
-  tex = canvas.getTexture(marioUV);
+
+  // Wyłączamy interpolację tekstury
+  marioUV.setInterpolation(NEAREST, NEAREST);
 }
 
 function draw() {
-  stroke(0);
-  strokeWeight(0);
+  // Tło i ustawienia
   background(100);
-  orbitControl(5);
-  rotateZ(PI);
-  texture(marioUV);
-  tex.setInterpolation(NEAREST, NEAREST);
-  model(mario);
+  orbitControl(5); // Sterowanie kamerą
 
+  // Obrót modelu
+  rotateZ(PI);
+
+  // Renderowanie modelu z teksturą
+  noStroke(); // Usunięcie obramowania modelu
+  texture(marioUV); // Ustawienie tekstury
+  model(mario); // Wyświetlenie modelu
 }
