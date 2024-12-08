@@ -12,21 +12,19 @@ function setup() {
 
   // Utwórz teksturę dla obrazu
   tex = canvas.getTexture(marioUV);
+
+  // Ustaw stałą interpolację na NEAREST (dla ostrych tekstur)
+  tex.setInterpolation(NEAREST, NEAREST);
 }
 
 function draw() {
   background(220);
-  orbitControl();
+  orbitControl(); // Dodano ręczną kontrolę kamery (możesz używać myszy, jeśli chcesz)
 
-  // Ustawienie interpolacji na podstawie stanu myszy
-  if (mouseIsPressed) {
-    tex.setInterpolation(LINEAR, LINEAR); // Ustaw rozmycie tekstury
-  } else {
-    tex.setInterpolation(NEAREST, NEAREST); // Ustaw ostrość tekstury
-  }
-
+  // Obróć model w celu poprawy orientacji
+  rotateX(PI);  // Obraca model do właściwej orientacji (jeśli jest do góry nogami)
+  
   // Renderowanie modelu z teksturą
-  rotateY(frameCount * 0.01); // Powolny obrót modelu
-  texture(marioUV);          // Ustaw teksturę
-  model(mario);              // Wyświetl model
+  texture(marioUV); // Nałóż teksturę na model
+  model(mario);     // Wyświetl model
 }
