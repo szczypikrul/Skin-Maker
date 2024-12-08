@@ -23,7 +23,7 @@ function draw() {
 
   // Obróć model w celu poprawy orientacji
   rotateX(PI);  // Obraca model do właściwej orientacji (jeśli jest do góry nogami)
-  
+  noStroke();
   // Renderowanie modelu z teksturą
   texture(marioUV); // Nałóż teksturę na model
   model(mario);     // Wyświetl model
