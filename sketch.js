@@ -8,6 +8,7 @@ function preload() {
 
 function setup() {
   createCanvas(400, 400, WEBGL);
+  blendMode(BLEND);
 }
 
 function draw() {
@@ -19,5 +20,5 @@ function draw() {
  
   model(mario);
   texture(marioUV);
-  filter(BLUR, 10);
+
 }
