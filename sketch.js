@@ -4,7 +4,7 @@ let marioUV;
 function preload() {
   mario = loadModel('model/model.obj', true);
   marioUV = loadImage('img/steve.png');
-  marioUV.setInterpolation(NEAREST, NEAREST);
+  
 }
 
 function setup() {
@@ -21,5 +21,5 @@ function draw() {
  
   model(mario);
   texture(marioUV);
-
+  marioUV.setInterpolation(NEAREST, NEAREST);
 }
