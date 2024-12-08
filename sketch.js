@@ -50,12 +50,14 @@ function setup() {
   
   // Możesz połączyć obie tekstury na jednym obiekcie graficznym
   tex1.blend(tex2, 0, 0, texture2.width, texture2.height, 0, 0, texture1.width, texture1.height, ADD);
+  tex1.setInterpolation(NEAREST, NEAREST);
 }
 
 function draw() {
   background(200);
   orbitControl();
-
+  rotateX(PI);  // Obraca model do właściwej orientacji (jeśli jest do góry nogami)
+  noStroke();
   // Renderujemy model z nałożonymi teksturami
   texture(tex1); // Łączona tekstura
   model(model3D);
