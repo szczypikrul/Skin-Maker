@@ -1,34 +1,32 @@
 let mario;
 let marioUV;
+let tex;
 
 function preload() {
-  // Ładujemy model i teksturę
-  mario = loadModel('model/model.obj', true);
-  marioUV = loadImage('img/steve.png');
+  mario = loadModel('model/model.obj', true); // Załaduj model
+  marioUV = loadImage('img/steve.png');       // Załaduj teksturę
 }
 
 function setup() {
-  createCanvas(400, 400, WEBGL);
+  let canvas = createCanvas(400, 400, WEBGL);
 
-  // Uzyskaj dostęp do kontekstu WebGL
-  const gl = this._renderer.GL;
-  
-  // Wyłącz interpolację tekstury
-  const tex = canvas.getTexture(marioUV);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  // Utwórz teksturę dla obrazu
+  tex = canvas.getTexture(marioUV);
 }
 
 function draw() {
-  // Tło i ustawienia
-  background(100);
-  orbitControl(5); // Sterowanie kamerą
+  background(220);
+  orbitControl();
 
-  // Obrót modelu
-  rotateZ(PI);
+  // Ustawienie interpolacji na podstawie stanu myszy
+  if (mouseIsPressed) {
+    tex.setInterpolation(LINEAR, LINEAR); // Ustaw rozmycie tekstury
+  } else {
+    tex.setInterpolation(NEAREST, NEAREST); // Ustaw ostrość tekstury
+  }
 
   // Renderowanie modelu z teksturą
-  noStroke(); // Usunięcie obramowania modelu
-  texture(marioUV); // Ustawienie tekstury
-  model(mario); // Wyświetlenie modelu
+  rotateY(frameCount * 0.01); // Powolny obrót modelu
+  texture(marioUV);          // Ustaw teksturę
+  model(mario);              // Wyświetl model
 }
