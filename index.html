@@ -3,107 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Model 3D z Teksturą</title>
+    <title>Łączenie Grafik i Model 3D</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/addons/p5.sound.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
             margin: 0;
             padding: 0;
+        }
+        #model-container, #controls-container {
+            width: 48%;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            height: 100vh;
-        }
-
-        #main-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        #model-container {
-            flex: 2;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            background-color: #f0f0f0;
-        }
-
-        #controls-container {
-            flex: 1;
-            padding: 20px;
-            box-shadow: -3px 0px 5px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
-
-        canvas#canvas {
-            margin: 10px auto;
-            border: 1px solid #000;
-            display: block;
-        }
-
-        .controls-section {
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        button, select, a {
-            display: block;
-            margin: 10px auto;
+            align-items: center;
             padding: 10px;
-            font-size: 1rem;
-            cursor: pointer;
         }
-
-        a#download {
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            background-color: #007bff;
-            border-radius: 5px;
+        #canvas-container {
+            width: 80%;
+            margin-top: 20px;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        #download {
+            margin-top: 10px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div id="main-container">
-        <!-- Model 3D -->
-        <div id="model-container">
-            <script src="sketch.js"></script>
-        </div>
-
-        <!-- Lista wyboru i przyciski -->
-        <div id="controls-container">
-            <h1>Wybierz Teksturę</h1>
-            <div class="controls-section">
-                <label for="list1">Wybierz pierwszą grafikę:</label>
-                <select id="list1">
-                    <option value="img/steve.png">Grafika 1</option>
-                    <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
-                </select>
-            </div>
-            <div class="controls-section">
-                <label for="list2">Wybierz drugą grafikę:</label>
-                <select id="list2">
-                    <option value="img/steve.png">Grafika 1</option>
-                    <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
-                </select>
-            </div>
-            <button id="combine">Połącz Grafiki</button>
-        </div>
+    <!-- Sekcja Modelu 3D -->
+    <div id="model-container">
+        <h2>Model 3D</h2>
+        <div id="model-canvas"></div>
     </div>
 
-    <!-- Podgląd canvas i przycisk pobrania -->
-    <div style="text-align: center; padding: 10px; background-color: #f8f9fa; box-shadow: 0px -3px 5px rgba(0, 0, 0, 0.1);">
-        <canvas id="canvas" width="128" height="128"></canvas>
-        <a id="download" download="combined-image.png" style="display: none;">Pobierz obraz</a>
+    <!-- Sekcja Kontroli -->
+    <div id="controls-container">
+        <h2>Połącz Grafiki</h2>
+        <label for="list1">Wybierz pierwszą grafikę:</label>
+        <select id="list1">
+            <option value="img/steve.png">Grafika 1</option>
+            <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
+        </select>
+        <label for="list2">Wybierz drugą grafikę:</label>
+        <select id="list2">
+            <option value="img/steve.png">Grafika 1</option>
+            <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
+        </select>
+        <button id="combine">Połącz grafiki</button>
+        <div id="canvas-container">
+            <canvas id="canvas" width="128" height="128"></canvas>
+            <a id="download" download="combined-image.png">Pobierz obraz</a>
+        </div>
     </div>
 
     <script src="script.js"></script>
+    <script src="sketch.js"></script>
 </body>
 </html>
