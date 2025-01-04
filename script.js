@@ -42,37 +42,44 @@
     updateCanvas();
 });
 */
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+let mario;
+let combinedTexture;
 
-    // Funkcja do odświeżania podglądu
-    const updateCanvas = () => {
-        const list1Value = document.getElementById('list1').value;
-        const list2Value = document.getElementById('list2').value;
+function preload() {
+    mario = loadModel('model/model.obj', true);
+}
 
-        const img1 = new Image();
-        const img2 = new Image();
+function setup() {
+    // Tworzenie canvasu dla modelu 3D
+    const modelCanvas = createCanvas(400, 400, WEBGL);
+    modelCanvas.parent('model-canvas');
 
-        img1.src = list1Value;
-        img2.src = list2Value;
+    // Pobieranie tekstury z canvasu do łączenia grafik
+    const sourceCanvas = document.getElementById('canvas');
+    combinedTexture = createImage(sourceCanvas.width, sourceCanvas.height);
 
-        img1.onload = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img1, 0, 0, canvas.width, canvas.height);
+    // Aktualizacja tekstury w czasie rzeczywistym
+    setInterval(() => {
+        combinedTexture.loadPixels();
+        combinedTexture.copy(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, 0, 0, sourceCanvas.width, sourceCanvas.height);
+        combinedTexture.updatePixels();
+    }, 100);
+}
 
-            img2.onload = () => {
-                ctx.drawImage(img2, 0, 0, canvas.width, canvas.height);
-            };
-        };
-    };
+function draw() {
+    background(220);
+    orbitControl();
 
-    document.getElementById('list1').addEventListener('change', updateCanvas);
-    document.getElementById('list2').addEventListener('change', updateCanvas);
+    // Obrót modelu dla poprawnej orientacji
+    rotateX(HALF_PI);
+    rotateZ(PI);
 
-    document.getElementById('combine').addEventListener('click', () => {
-        const downloadLink = document.getElementById('download');
-        downloadLink.href = canvas.toDataURL('image/png');
-        downloadLink.style.display = 'inline';
-    });
+    // Nałożenie tekstury na model
+    if (combinedTexture instanceof p5.Image) {
+        texture(combinedTexture);
+    } else {
+        noTexture();
+    }
+    model(mario);
+}
 
