@@ -67,17 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    // Obsługa zmiany wartości w polach <select>
     document.getElementById('list1').addEventListener('change', updateCanvas);
     document.getElementById('list2').addEventListener('change', updateCanvas);
 
-    // Obsługa kliknięcia przycisku "Połącz grafiki"
     document.getElementById('combine').addEventListener('click', () => {
         const downloadLink = document.getElementById('download');
         downloadLink.href = canvas.toDataURL('image/png');
         downloadLink.style.display = 'inline';
     });
 
-    // Inicjalizuj podgląd na start
-    updateCanvas();
-});
