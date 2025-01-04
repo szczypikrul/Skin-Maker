@@ -32,25 +32,26 @@ function draw() {
 
 */
 let mario;
-let marioUV;
 let combinedTexture;
 
 function preload() {
     mario = loadModel('model/model.obj', true);
-    marioUV = createGraphics(128, 128); // Stwórz tymczasową teksturę
 }
 
 function setup() {
+    // Tworzenie canvasu dla modelu 3D
     const modelCanvas = createCanvas(400, 400, WEBGL);
     modelCanvas.parent('model-canvas');
 
-    // Nasłuchuj zmian w canvasie połączonych grafik
+    // Pobieranie tekstury z canvasu do łączenia grafik
     const sourceCanvas = document.getElementById('canvas');
     combinedTexture = createImage(sourceCanvas.width, sourceCanvas.height);
 
-    // Aktualizuj teksturę co klatkę
+    // Aktualizacja tekstury w czasie rzeczywistym
     setInterval(() => {
+        combinedTexture.loadPixels();
         combinedTexture.copy(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, 0, 0, sourceCanvas.width, sourceCanvas.height);
+        combinedTexture.updatePixels();
     }, 100);
 }
 
@@ -58,7 +59,11 @@ function draw() {
     background(220);
     orbitControl();
 
-    // Wyświetl model z teksturą
+    // Obrót modelu dla poprawnej orientacji
+    rotateX(HALF_PI);
+    rotateZ(PI);
+
+    // Nałożenie tekstury na model
     if (combinedTexture instanceof p5.Image) {
         texture(combinedTexture);
     } else {
@@ -66,3 +71,4 @@ function draw() {
     }
     model(mario);
 }
+
