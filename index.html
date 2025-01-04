@@ -3,84 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Model Viewer - A-Frame</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <title>Model 3D z Teksturą</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/addons/p5.sound.min.js"></script>
     <style>
-        /* Stylowanie przycisków */
-        .button {
-            position: absolute;
-            top: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 10px 20px;
-            font-size: 18px;
-            border: none;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        #model-container {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+        }
+
+        #controls-container {
+            flex: 1;
+            padding: 20px;
+            box-shadow: -3px 0px 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        canvas#canvas {
+            margin: 10px auto;
+            border: 1px solid #000;
+            display: block;
+        }
+
+        .controls-section {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        button, select, a {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 1rem;
             cursor: pointer;
         }
 
-        .left-button {
-            left: 20px;
-        }
-
-        .right-button {
-            right: 20px;
+        a#download {
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <a-scene>
-        <!-- Tło jako grafika -->
-        <a-sky src="url(img/tlo.jpg)"></a-sky> <!-- Zmień "tło.jpg" na ścieżkę do swojej grafiki -->
-
-        <!-- Definicja kamery -->
-        <a-camera position="0 1.6 3"></a-camera>
-        <a-assets>
-            <img id="my-texture" src="img/jaskiniowiec_skin.png">
-            <a-asset-item id="obj" src="model/model.obj"></a-asset-item>
-            <a-asset-item id="mtl" src="model/model.mtl"></a-asset-item>
-        </a-assets>
-
+    <div id="main-container">
         <!-- Model 3D -->
-        <a-entity
-            id="model"
-            obj-model="obj: #obj; mtl: #mtl"
-            scale="1 1 1"
-            position="0 0 0"
-            rotation="0 180 0"
-            material="transparent: true; alphaTest: 0.5;">
-        </a-entity>
+        <div id="model-container">
+            <script src="sketch.js"></script>
+        </div>
 
-        <!-- Światła -->
-        <!-- <a-light type="ambient" color="#fff" intensity="1"></a-light>-->
+        <!-- Lista wyboru i przyciski -->
+        <div id="controls-container">
+            <h1>Wybierz Teksturę</h1>
+            <div class="controls-section">
+                <label for="list1">Wybierz pierwszą grafikę:</label>
+                <select id="list1">
+                    <option value="img/steve.png">Grafika 1</option>
+                    <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
+                </select>
+            </div>
+            <div class="controls-section">
+                <label for="list2">Wybierz drugą grafikę:</label>
+                <select id="list2">
+                    <option value="img/steve.png">Grafika 1</option>
+                    <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
+                </select>
+            </div>
+            <button id="combine">Połącz Grafiki</button>
+        </div>
+    </div>
 
-        <!-- Światło punktowe (z różnych kierunków) -->
-        <a-light type="point" position="2 2 2" intensity="1.2" target="#model"></a-light> <!-- Światło z góry -->
-        <a-light type="point" position="-2 2 2" intensity="1.2" target="#model"></a-light> <!-- Światło z lewej strony -->
-        <a-light type="point" position="0 2 -2" intensity="1.2" target="#model"></a-light> <!-- Światło z tyłu -->
+    <!-- Podgląd canvas i przycisk pobrania -->
+    <div style="text-align: center; padding: 10px; background-color: #f8f9fa; box-shadow: 0px -3px 5px rgba(0, 0, 0, 0.1);">
+        <canvas id="canvas" width="128" height="128"></canvas>
+        <a id="download" download="combined-image.png" style="display: none;">Pobierz obraz</a>
+    </div>
 
-    </a-scene>
-
-    <!-- Przycisk lewo -->
-    <button class="button left-button" onclick="rotateModel('left')">← Obróć w lewo</button>
-
-    <!-- Przycisk prawo -->
-    <button class="button right-button" onclick="rotateModel('right')">Obróć w prawo →</button>
-
-    <script>
-        // Funkcja do obracania modelu w lewo lub w prawo
-        function rotateModel(direction) {
-            const model = document.querySelector("#model");
-            let rotation = model.getAttribute("rotation");
-            let newRotation;
-
-            if (direction === 'left') {
-                newRotation = { x: rotation.x, y: rotation.y - 30, z: rotation.z };
-            } else if (direction === 'right') {
-                newRotation = { x: rotation.x, y: rotation.y + 30, z: rotation.z };
-            }
-
-            model.setAttribute("rotation", newRotation);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
