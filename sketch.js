@@ -1,4 +1,4 @@
-/*let mario;
+let mario;
 let marioUV;
 let tex;
 
@@ -27,8 +27,8 @@ function draw() {
   // Renderowanie modelu z teksturą
   texture(marioUV); // Nałóż teksturę na model
   model(mario);     // Wyświetl model
-}*/
-let model3D;
+}
+/*let model3D;
 let texture1, texture2;
 let tex1, tex2;
 
@@ -62,4 +62,4 @@ function draw() {
   texture(tex1); // Łączona tekstura
   model(model3D);
 }
-
+*/
