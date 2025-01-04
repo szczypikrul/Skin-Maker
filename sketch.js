@@ -35,7 +35,7 @@ let mario;
 let combinedTexture;
 
 function preload() {
-    mario = loadModel('model/model.obj', true);
+    mario = loadModel('model/model.obj', true); // Wczytanie modelu 3D
 }
 
 function setup() {
@@ -43,15 +43,20 @@ function setup() {
     const modelCanvas = createCanvas(400, 400, WEBGL);
     modelCanvas.parent('model-canvas');
 
-    // Pobieranie tekstury z canvasu do łączenia grafik
-    const sourceCanvas = document.getElementById('canvas');
-    combinedTexture = createImage(sourceCanvas.width, sourceCanvas.height);
+    // Tworzenie pustej tekstury
+    combinedTexture = createGraphics(64, 64); // Tworzenie pustego p5.Graphics
 
-    // Aktualizacja tekstury w czasie rzeczywistym
+    // Dynamiczne aktualizowanie tekstury
     setInterval(() => {
-        combinedTexture.loadPixels();
-        combinedTexture.copy(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, 0, 0, sourceCanvas.width, sourceCanvas.height);
-        combinedTexture.updatePixels();
+        const sourceCanvas = document.getElementById('canvas');
+        const ctx = sourceCanvas.getContext('2d');
+        const imageData = ctx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
+
+        combinedTexture.loadPixels(); // Wczytanie pikseli w p5.Graphics
+        for (let i = 0; i < imageData.data.length; i++) {
+            combinedTexture.pixels[i] = imageData.data[i];
+        }
+        combinedTexture.updatePixels(); // Zaktualizowanie pikseli w p5.Graphics
     }, 100);
 }
 
@@ -59,16 +64,15 @@ function draw() {
     background(220);
     orbitControl();
 
-    // Obrót modelu dla poprawnej orientacji
+    // Obracanie modelu dla właściwej orientacji
     rotateX(HALF_PI);
     rotateZ(PI);
 
-    // Nałożenie tekstury na model
-    if (combinedTexture instanceof p5.Image) {
+    // Nakładanie tekstury na model 3D
+    if (combinedTexture instanceof p5.Graphics) {
         texture(combinedTexture);
     } else {
         noTexture();
     }
     model(mario);
 }
-
