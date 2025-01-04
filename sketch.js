@@ -65,7 +65,7 @@ function draw() {
     orbitControl();
 
     // Obracanie modelu dla właściwej orientacji
-    rotateX(HALF_PI);
+    rotateX(PI);
     rotateZ(PI);
 
     // Nakładanie tekstury na model 3D
