@@ -32,33 +32,37 @@ function draw() {
 
 */
 let mario;
-let texCanvas;
-let textureFromCanvas;
+let marioUV;
+let combinedTexture;
 
 function preload() {
-    mario = loadModel('model/model.obj', true); // Załaduj model
+    mario = loadModel('model/model.obj', true);
+    marioUV = createGraphics(128, 128); // Stwórz tymczasową teksturę
 }
 
 function setup() {
-    let canvas = createCanvas(400, 400, WEBGL);
+    const modelCanvas = createCanvas(400, 400, WEBGL);
+    modelCanvas.parent('model-canvas');
 
-    // Pobierz canvas z HTML jako źródło tekstury
-    texCanvas = document.getElementById('canvas');
+    // Nasłuchuj zmian w canvasie połączonych grafik
+    const sourceCanvas = document.getElementById('canvas');
+    combinedTexture = createImage(sourceCanvas.width, sourceCanvas.height);
 
-    // Utwórz teksturę z HTML canvas
-    textureFromCanvas = createGraphics(texCanvas.width, texCanvas.height);
+    // Aktualizuj teksturę co klatkę
+    setInterval(() => {
+        combinedTexture.copy(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, 0, 0, sourceCanvas.width, sourceCanvas.height);
+    }, 100);
 }
 
 function draw() {
     background(220);
-    orbitControl(); // Dodano kontrolę kamery
+    orbitControl();
 
-    // Odśwież teksturę z zawartości HTML canvas
-    textureFromCanvas.clear();
-    textureFromCanvas.image(texCanvas, 0, 0);
-
-    // Renderuj model z aktualną teksturą
-    noStroke();
-    texture(textureFromCanvas); // Nałóż dynamiczną teksturę
-    model(mario);               // Wyświetl model
+    // Wyświetl model z teksturą
+    if (combinedTexture instanceof p5.Image) {
+        texture(combinedTexture);
+    } else {
+        noTexture();
+    }
+    model(mario);
 }
