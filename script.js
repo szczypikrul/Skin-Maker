@@ -58,21 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
         img2.src = list2Value;
 
         img1.onload = () => {
-            // Wyczyść canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // Narysuj pierwszy obraz
             ctx.drawImage(img1, 0, 0, canvas.width, canvas.height);
 
             img2.onload = () => {
-                // Nałóż drugi obraz na pierwszy
                 ctx.drawImage(img2, 0, 0, canvas.width, canvas.height);
-
-                // Wywołaj funkcję odświeżania w sketch.js (ręczna synchronizacja)
-                if (window.textureFromCanvas) {
-                    const sketchCanvas = window.textureFromCanvas.drawingContext.canvas;
-                    const sourceCanvas = document.getElementById('canvas');
-                    sketchCanvas.getContext('2d').drawImage(sourceCanvas, 0, 0);
-                }
             };
         };
     };
@@ -83,12 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Obsługa kliknięcia przycisku "Połącz grafiki"
     document.getElementById('combine').addEventListener('click', () => {
-        // Połączenie grafik na canvasie jest już widoczne, wystarczy przygotować link do pobrania
         const downloadLink = document.getElementById('download');
         downloadLink.href = canvas.toDataURL('image/png');
-        downloadLink.style.display = 'inline'; // Pokaż przycisk pobierania
+        downloadLink.style.display = 'inline';
     });
 
-    // Zainicjuj podgląd na start
+    // Inicjalizuj podgląd na start
     updateCanvas();
 });
