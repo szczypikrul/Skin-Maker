@@ -45,7 +45,7 @@ function setup() {
 
     // Tworzenie pustej tekstury
     combinedTexture = createGraphics(64, 64); // Tworzenie pustego p5.Graphics
-
+    combinedTexture.setInterpolation(NEAREST, NEAREST);
     // Dynamiczne aktualizowanie tekstury
     setInterval(() => {
         const sourceCanvas = document.getElementById('canvas');
