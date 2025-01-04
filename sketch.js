@@ -1,3 +1,4 @@
+/*
 let mario;
 let marioUV;
 let tex;
@@ -28,38 +29,36 @@ function draw() {
   texture(marioUV); // Nałóż teksturę na model
   model(mario);     // Wyświetl model
 }
-/*let model3D;
-let texture1, texture2;
-let tex1, tex2;
+
+*/
+let mario;
+let texCanvas;
+let textureFromCanvas;
 
 function preload() {
-  model3D = loadModel('model/model.obj', true);
-  texture1 = loadImage('img/jaskiniowiec_skin.png');
-  texture2 = loadImage('img/steve.png');
+    mario = loadModel('model/model.obj', true); // Załaduj model
 }
 
 function setup() {
-  createCanvas(400, 400, WEBGL);
+    let canvas = createCanvas(400, 400, WEBGL);
 
-  // Pobieramy tekstury i ustawiamy interpolację na NEAREST
-  tex1 = createGraphics(texture1.width, texture1.height);
-  tex1.image(texture1, 0, 0);
-  
-  tex2 = createGraphics(texture2.width, texture2.height);
-  tex2.image(texture2, 0, 0);
-  
-  // Możesz połączyć obie tekstury na jednym obiekcie graficznym
-  tex1.blend(tex2, 0, 0, texture2.width, texture2.height, 0, 0, texture1.width, texture1.height, ADD);
-  tex1.setInterpolation(NEAREST, NEAREST);
+    // Pobierz canvas z HTML jako źródło tekstury
+    texCanvas = document.getElementById('canvas');
+
+    // Utwórz teksturę z HTML canvas
+    textureFromCanvas = createGraphics(texCanvas.width, texCanvas.height);
 }
 
 function draw() {
-  background(200);
-  orbitControl();
-  rotateX(PI);  // Obraca model do właściwej orientacji (jeśli jest do góry nogami)
-  noStroke();
-  // Renderujemy model z nałożonymi teksturami
-  texture(tex1); // Łączona tekstura
-  model(model3D);
+    background(220);
+    orbitControl(); // Dodano kontrolę kamery
+
+    // Odśwież teksturę z zawartości HTML canvas
+    textureFromCanvas.clear();
+    textureFromCanvas.image(texCanvas, 0, 0);
+
+    // Renderuj model z aktualną teksturą
+    noStroke();
+    texture(textureFromCanvas); // Nałóż dynamiczną teksturę
+    model(mario);               // Wyświetl model
 }
-*/
