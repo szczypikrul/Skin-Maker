@@ -42,7 +42,6 @@
         let generatedTexture; // Texture generated from canvas
         const canvasEl = document.getElementById('canvas');
         const ctx = canvasEl.getContext('2d');
-        let tex;  // Declare tex to store the texture for the model
 
         // Preload model
         function preload() {
@@ -61,20 +60,12 @@
             // Rotate the model to correct orientation
             rotateX(PI);
 
-            // Apply the texture if available
+            // Use the generated texture on the 3D model
             if (generatedTexture) {
                 texture(generatedTexture); // Apply texture
             }
-
             noStroke();
             model(mario); // Display the model
-
-            // Set interpolation method based on mouse button press
-            if (mouseIsPressed) {
-                tex.setInterpolation(LINEAR, LINEAR); // Smooth interpolation (default)
-            } else {
-                tex.setInterpolation(NEAREST, NEAREST); // Sharp interpolation
-            }
         }
 
         // Combine selected textures in the canvas
@@ -103,8 +94,17 @@
                         generatedTexture.image(img, 0, 0, 256, 256);
 
                         // Set interpolation to NEAREST for sharp textures
-                        tex = generatedTexture.getTexture(); // Get texture from generated graphics
-                        tex.setInterpolation(NEAREST, NEAREST); // Prevent blurring
+                        generatedTexture.textureMode(NORMAL);
+                        generatedTexture.setInterpolation(NEAREST, NEAREST); // Prevent blurring
                     });
 
-  
+                    // Show download link
+                    const downloadLink = document.getElementById('download');
+                    downloadLink.href = canvasEl.toDataURL('image/png');
+                    downloadLink.style.display = 'inline';
+                };
+            };
+        });
+    </script>
+</body>
+</html>
