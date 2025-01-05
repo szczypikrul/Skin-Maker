@@ -44,9 +44,7 @@ function setup() {
     modelCanvas.parent('model-canvas');
 
     // Tworzenie pustej tekstury za pomocą createImage
-    combinedTexture = createImage(64, 64); // Używamy createImage, aby mieć dostęp do interpolacji
-    combinedTexture.loadPixels();
-    combinedTexture.setInterpolation(NEAREST); // Ustawienie interpolacji NEAREST dla ostrości
+    combinedTexture = createImage(64, 64); // Używamy createImage, aby móc modyfikować piksele
 
     // Dynamiczne aktualizowanie tekstury
     setInterval(() => {
@@ -78,3 +76,5 @@ function draw() {
     }
     model(mario);
 }
+
+
