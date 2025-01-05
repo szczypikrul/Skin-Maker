@@ -39,7 +39,7 @@
 
     <script>
         let mario;
-        let generatedTexture; // Canvas texture generated from combined graphics
+        let generatedTexture; // Texture generated from canvas
         const canvasEl = document.getElementById('canvas');
         const ctx = canvasEl.getContext('2d');
 
@@ -51,10 +51,6 @@
         function setup() {
             const canvas = createCanvas(400, 400, WEBGL);
             canvas.parent('p5Canvas');
-
-            // Initial texture
-            generatedTexture = createGraphics(256, 256);
-            generatedTexture.image(canvasEl, 0, 0, 256, 256);
         }
 
         function draw() {
@@ -90,8 +86,11 @@
                 img2.onload = () => {
                     ctx.drawImage(img2, 0, 0, canvasEl.width, canvasEl.height);
 
-                    // Update the generated texture for the 3D model
-                    generatedTexture.image(canvasEl, 0, 0, 256, 256);
+                    // Convert the canvas content to a texture
+                    const canvasDataURL = canvasEl.toDataURL('image/png'); // Convert to Data URL
+                    loadImage(canvasDataURL, (img) => {
+                        generatedTexture = img; // Update texture with loaded image
+                    });
 
                     // Show download link
                     const downloadLink = document.getElementById('download');
