@@ -39,7 +39,7 @@
 
     <script>
         let mario;
-        let generatedTexture; // Texture generated from canvas
+        let generatedTexture; // Texture created dynamically
         const canvasEl = document.getElementById('canvas');
         const ctx = canvasEl.getContext('2d');
 
@@ -60,9 +60,9 @@
             // Rotate the model to correct orientation
             rotateX(PI);
 
-            // Use the generated texture on the 3D model
+            // Apply the generated texture if available
             if (generatedTexture) {
-                texture(generatedTexture); // Apply texture
+                texture(generatedTexture); // Apply the generated texture
             }
             noStroke();
             model(mario); // Display the model
@@ -86,16 +86,17 @@
                 img2.onload = () => {
                     ctx.drawImage(img2, 0, 0, canvasEl.width, canvasEl.height);
 
-                    // Create a p5.Texture directly from the canvas
-                    const gl = drawingContext; // WebGL context
-                    const textureCanvas = createGraphics(256, 256, WEBGL);
-                    const texture = new p5.Texture(gl, canvasEl);
+                    // Create p5.Image from canvas and set interpolation
+                    const canvasGraphics = createGraphics(256, 256);
+                    canvasGraphics.drawingContext.drawImage(canvasEl, 0, 0);
+                    canvasGraphics.loadPixels(); // Load pixel data for interpolation
+                    canvasGraphics._pixelsDirty = true;
 
                     // Apply NEAREST interpolation
-                    texture.setInterpolation(NEAREST, NEAREST);
+                    canvasGraphics.canvas.style.imageRendering = 'pixelated';
 
-                    // Set the generated texture for the 3D model
-                    generatedTexture = texture;
+                    // Assign to generatedTexture
+                    generatedTexture = canvasGraphics;
 
                     // Show download link
                     const downloadLink = document.getElementById('download');
