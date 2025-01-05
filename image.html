@@ -33,7 +33,7 @@
             <br><br>
             <a id="download" style="display: none;" download="combined_texture.png">Pobierz obraz</a>
             <br><br>
-            <canvas id="canvas" width="256" height="256" style="border: 1px solid black;"></canvas>
+            <canvas id="canvas" width="64" height="64" style="border: 1px solid black;"></canvas>
         </div>
     </div>
 
@@ -87,7 +87,7 @@
                     ctx.drawImage(img2, 0, 0, canvasEl.width, canvasEl.height);
 
                     // Create p5.Image from canvas and set interpolation
-                    const canvasGraphics = createGraphics(256, 256);
+                    const canvasGraphics = createGraphics(64, 64);
                     canvasGraphics.drawingContext.drawImage(canvasEl, 0, 0);
                     canvasGraphics.loadPixels(); // Load pixel data for interpolation
                     canvasGraphics._pixelsDirty = true;
