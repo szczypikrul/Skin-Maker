@@ -3,39 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Łączenie grafik</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-        canvas {
-            border: 1px solid #000;
-            margin-top: 20px;
-        }
-    </style>
+    <title>3D Model with Combined Textures</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.js"></script>
 </head>
 <body>
-    <h1>Połącz Grafiki</h1>
-    <div>
-        <label for="list1">Wybierz pierwszą grafikę:</label>
-        <select id="list1">
-            <option value="img/steve.png">Grafika 1</option>
-            <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
-        </select>
-    </div>
-    <div>
-        <label for="list2">Wybierz drugą grafikę:</label>
-        <select id="list2">
-            <option value="img/steve.png">Grafika 1</option>
-            <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
-        </select>
-    </div>
-    <button id="combine">Połącz grafiki</button>
-    <canvas id="canvas" width="64" height="64"></canvas>
-    <a id="download" download="combined-image.png" style="display: none;">Pobierz obraz</a>
+    <div style="display: flex; justify-content: space-between; padding: 20px;">
+        <!-- Podgląd 3D modelu -->
+        <div>
+            <h3>Model 3D</h3>
+            <div id="p5Canvas"></div>
+        </div>
 
-    <script src="script.js"></script>
+        <!-- Sekcja wyboru i podglądu grafiki -->
+        <div>
+            <h3>Połącz Grafiki</h3>
+            <label for="list1">Wybierz pierwszą grafikę:</label>
+            <select id="list1">
+                <option value="img/texture1.png">Grafika 1</option>
+                <option value="img/texture2.png">Grafika 2</option>
+            </select>
+            <br><br>
+            <label for="list2">Wybierz drugą grafikę:</label>
+            <select id="list2">
+                <option value="img/texture3.png">Grafika 3</option>
+                <option value="img/texture4.png">Grafika 4</option>
+            </select>
+            <br><br>
+            <button id="combine">Połącz grafiki</button>
+            <br><br>
+            <a id="download" style="display: none;" download="combined_texture.png">Pobierz obraz</a>
+            <br><br>
+            <canvas id="canvas" width="256" height="256" style="border: 1px solid black;"></canvas>
+        </div>
+    </div>
+
+    <script>
+        let mario;
+        let generatedTexture; // Canvas texture generated from combined graphics
+        const canvasEl = document.getElementById('canvas');
+        const ctx = canvasEl.getContext('2d');
+
+        // Preload model
+        function preload() {
+            mario = loadModel('model/model.obj', true); // Load the 3D model
+        }
+
+        function setup() {
+            const canvas = createCanvas(400, 400, WEBGL);
+            canvas.parent('p5Canvas');
+        }
+
+        function draw() {
+            background(220);
+            orbitControl(); // Enable mouse controls
+
+            // Rotate the model to correct orientation
+            rotateX(PI);
+
+            // Use the generated texture on the 3D model
+            if (generatedTexture) {
+                texture(generatedTexture); // Apply texture
+            }
+            noStroke();
+            model(mario); // Display the model
+        }
+
+        // Combine selected textures in the canvas
+        document.getElementById('combine').addEventListener('click', () => {
+            const list1Value = document.getElementById('list1').value;
+            const list2Value = document.getElementById('list2').value;
+
+            const img1 = new Image();
+            const img2 = new Image();
+
+            img1.src = list1Value;
+            img2.src = list2Value;
+
+            img1.onload = () => {
+                ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+                ctx.drawImage(img1, 0, 0, canvasEl.width, canvasEl.height);
+
+                img2.onload = () => {
+                    ctx.drawImage(img2, 0, 0, canvasEl.width, canvasEl.height);
+
+                    // Update the generated texture for 3D model
+                    generatedTexture = createGraphics(256, 256);
+                    const textureImage = new Image();
+                    textureImage.src = canvasEl.toDataURL(); // Use the combined canvas as the texture source
+                    textureImage.onload = () => {
+                        generatedTexture.image(textureImage, 0, 0, 256, 256);
+                    };
+
+                    // Show download link
+                    const downloadLink = document.getElementById('download');
+                    downloadLink.href = canvasEl.toDataURL('image/png');
+                    downloadLink.style.display = 'inline';
+                };
+            };
+        });
+    </script>
 </body>
 </html>
