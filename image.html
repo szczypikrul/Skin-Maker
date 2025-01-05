@@ -51,6 +51,9 @@
         function setup() {
             const canvas = createCanvas(400, 400, WEBGL);
             canvas.parent('p5Canvas');
+
+            // Initialize generatedTexture as a p5.Graphics object
+            generatedTexture = createGraphics(256, 256);
         }
 
         function draw() {
@@ -86,15 +89,12 @@
                 img2.onload = () => {
                     ctx.drawImage(img2, 0, 0, canvasEl.width, canvasEl.height);
 
-                    // Convert the canvas content to a texture
-                    const canvasDataURL = canvasEl.toDataURL('image/png'); // Convert to Data URL
+                    // Copy combined canvas content into the p5.Graphics texture
+                    generatedTexture.clear();
+                    generatedTexture.drawingContext.drawImage(canvasEl, 0, 0);
 
-                    loadImage(canvasDataURL, (img) => {
-                        // Use p5.Image to store the texture and set interpolation
-                        generatedTexture = createImage(256, 256);
-                        generatedTexture.copy(img, 0, 0, 256, 256, 0, 0, 256, 256);
-                        generatedTexture.setInterpolation(NEAREST, NEAREST); // Prevent blurring
-                    });
+                    // Apply NEAREST interpolation to generatedTexture
+                    generatedTexture.setInterpolation(NEAREST, NEAREST);
 
                     // Show download link
                     const downloadLink = document.getElementById('download');
