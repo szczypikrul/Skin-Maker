@@ -86,20 +86,16 @@
                 img2.onload = () => {
                     ctx.drawImage(img2, 0, 0, canvasEl.width, canvasEl.height);
 
-                    // Generate a new p5.Image object from the combined canvas
-                    const textureImage = createImage(256, 256);
-                    textureImage.loadPixels();
-                    const canvasData = ctx.getImageData(0, 0, 256, 256).data;
-                    for (let i = 0; i < canvasData.length; i++) {
-                        textureImage.pixels[i] = canvasData[i];
-                    }
-                    textureImage.updatePixels();
+                    // Create a p5.Texture directly from the canvas
+                    const gl = drawingContext; // WebGL context
+                    const textureCanvas = createGraphics(256, 256, WEBGL);
+                    const texture = new p5.Texture(gl, canvasEl);
 
                     // Apply NEAREST interpolation
-                    textureImage.setInterpolation(NEAREST, NEAREST);
+                    texture.setInterpolation(NEAREST, NEAREST);
 
-                    // Set the texture for the 3D model
-                    generatedTexture = textureImage;
+                    // Set the generated texture for the 3D model
+                    generatedTexture = texture;
 
                     // Show download link
                     const downloadLink = document.getElementById('download');
