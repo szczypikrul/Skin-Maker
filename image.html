@@ -89,7 +89,9 @@
                     // Convert the canvas content to a texture
                     const canvasDataURL = canvasEl.toDataURL('image/png'); // Convert to Data URL
                     loadImage(canvasDataURL, (img) => {
-                        generatedTexture = img; // Update texture with loaded image
+                        generatedTexture = createGraphics(256, 256);
+                        generatedTexture.image(img, 0, 0, 256, 256);
+                        generatedTexture.setInterpolation(NEAREST, NEAREST); // Prevent blurring
                     });
 
                     // Show download link
