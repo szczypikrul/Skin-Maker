@@ -33,7 +33,7 @@
             <br><br>
             <a id="download" style="display: none;" download="combined_texture.png">Pobierz obraz</a>
             <br><br>
-            <canvas id="canvas" width="64" height="64" style="border: 1px solid black;"></canvas>
+            <canvas id="canvas" width="256" height="256" style="border: 1px solid black;"></canvas>
         </div>
     </div>
 
@@ -42,6 +42,7 @@
         let generatedTexture; // Texture generated from canvas
         const canvasEl = document.getElementById('canvas');
         const ctx = canvasEl.getContext('2d');
+        let tex;  // Declare tex to store the texture for the model
 
         // Preload model
         function preload() {
@@ -60,12 +61,20 @@
             // Rotate the model to correct orientation
             rotateX(PI);
 
-            // Use the generated texture on the 3D model
+            // Apply the texture if available
             if (generatedTexture) {
                 texture(generatedTexture); // Apply texture
             }
+
             noStroke();
             model(mario); // Display the model
+
+            // Set interpolation method based on mouse button press
+            if (mouseIsPressed) {
+                tex.setInterpolation(LINEAR, LINEAR); // Smooth interpolation (default)
+            } else {
+                tex.setInterpolation(NEAREST, NEAREST); // Sharp interpolation
+            }
         }
 
         // Combine selected textures in the canvas
@@ -90,21 +99,12 @@
                     const canvasDataURL = canvasEl.toDataURL('image/png'); // Convert to Data URL
                     loadImage(canvasDataURL, (img) => {
                         // Create p5.Graphics object for the texture
-                        generatedTexture = createGraphics(64, 64);
-                        generatedTexture.image(img, 0, 0, 64, 64);
+                        generatedTexture = createGraphics(256, 256);
+                        generatedTexture.image(img, 0, 0, 256, 256);
 
                         // Set interpolation to NEAREST for sharp textures
-                        generatedTexture.textureMode(NORMAL);
-                        generatedTexture.setInterpolation(NEAREST, NEAREST); // Prevent blurring
+                        tex = generatedTexture.getTexture(); // Get texture from generated graphics
+                        tex.setInterpolation(NEAREST, NEAREST); // Prevent blurring
                     });
 
-                    // Show download link
-                    const downloadLink = document.getElementById('download');
-                    downloadLink.href = canvasEl.toDataURL('image/png');
-                    downloadLink.style.display = 'inline';
-                };
-            };
-        });
-    </script>
-</body>
-</html>
+  
