@@ -33,13 +33,13 @@
             <br><br>
             <a id="download" style="display: none;" download="combined_texture.png">Pobierz obraz</a>
             <br><br>
-            <canvas id="canvas" width="64" height="64" style="border: 1px solid black;"></canvas>
+            <canvas id="canvas" width="256" height="256" style="border: 1px solid black;"></canvas>
         </div>
     </div>
 
     <script>
         let mario;
-        let generatedTexture; // Texture created dynamically
+        let generatedTexture; // Texture generated from canvas
         const canvasEl = document.getElementById('canvas');
         const ctx = canvasEl.getContext('2d');
 
@@ -60,9 +60,9 @@
             // Rotate the model to correct orientation
             rotateX(PI);
 
-            // Apply the generated texture if available
+            // Use the generated texture on the 3D model
             if (generatedTexture) {
-                texture(generatedTexture); // Apply the generated texture
+                texture(generatedTexture); // Apply texture
             }
             noStroke();
             model(mario); // Display the model
@@ -86,17 +86,13 @@
                 img2.onload = () => {
                     ctx.drawImage(img2, 0, 0, canvasEl.width, canvasEl.height);
 
-                    // Create p5.Image from canvas and set interpolation
-                    const canvasGraphics = createGraphics(64, 64);
-                    canvasGraphics.drawingContext.drawImage(canvasEl, 0, 0);
-                    canvasGraphics.loadPixels(); // Load pixel data for interpolation
-                    canvasGraphics._pixelsDirty = true;
-
-                    // Apply NEAREST interpolation
-                    canvasGraphics.canvas.style.imageRendering = 'pixelated';
-
-                    // Assign to generatedTexture
-                    generatedTexture = canvasGraphics;
+                    // Convert the canvas content to a texture
+                    const canvasDataURL = canvasEl.toDataURL('image/png'); // Convert to Data URL
+                    loadImage(canvasDataURL, (img) => {
+                        generatedTexture = createGraphics(256, 256);
+                        generatedTexture.image(img, 0, 0, 256, 256);
+                        generatedTexture.setInterpolation(NEAREST, NEAREST); // Prevent blurring
+                    });
 
                     // Show download link
                     const downloadLink = document.getElementById('download');
@@ -108,3 +104,4 @@
     </script>
 </body>
 </html>
+
