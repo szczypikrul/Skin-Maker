@@ -33,7 +33,7 @@
             <br><br>
             <a id="download" style="display: none;" download="combined_texture.png">Pobierz obraz</a>
             <br><br>
-            <canvas id="canvas" width="256" height="256" style="border: 1px solid black;"></canvas>
+            <canvas id="canvas" width="64" height="64" style="border: 1px solid black;"></canvas>
         </div>
     </div>
 
@@ -89,8 +89,12 @@
                     // Convert the canvas content to a texture
                     const canvasDataURL = canvasEl.toDataURL('image/png'); // Convert to Data URL
                     loadImage(canvasDataURL, (img) => {
-                        generatedTexture = createGraphics(256, 256);
-                        generatedTexture.image(img, 0, 0, 256, 256);
+                        // Create p5.Graphics object for the texture
+                        generatedTexture = createGraphics(64, 64);
+                        generatedTexture.image(img, 0, 0, 64, 64);
+
+                        // Set interpolation to NEAREST for sharp textures
+                        generatedTexture.textureMode(NORMAL);
                         generatedTexture.setInterpolation(NEAREST, NEAREST); // Prevent blurring
                     });
 
@@ -104,4 +108,3 @@
     </script>
 </body>
 </html>
-
