@@ -43,9 +43,10 @@ function setup() {
     const modelCanvas = createCanvas(400, 400, WEBGL);
     modelCanvas.parent('model-canvas');
 
-    // Tworzenie pustej tekstury
-    combinedTexture = createGraphics(64, 64); // Tworzenie pustego p5.Graphics
-    combinedTexture.setInterpolation(NEAREST, NEAREST); // Ustawienie interpolacji NEAREST
+    // Tworzenie pustej tekstury za pomocą createImage
+    combinedTexture = createImage(64, 64); // Używamy createImage, aby mieć dostęp do interpolacji
+    combinedTexture.loadPixels();
+    combinedTexture.setInterpolation(NEAREST); // Ustawienie interpolacji NEAREST dla ostrości
 
     // Dynamiczne aktualizowanie tekstury
     setInterval(() => {
@@ -53,11 +54,11 @@ function setup() {
         const ctx = sourceCanvas.getContext('2d');
         const imageData = ctx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
 
-        combinedTexture.loadPixels(); // Wczytanie pikseli w p5.Graphics
+        combinedTexture.loadPixels(); // Wczytanie pikseli w combinedTexture
         for (let i = 0; i < imageData.data.length; i++) {
             combinedTexture.pixels[i] = imageData.data[i];
         }
-        combinedTexture.updatePixels(); // Zaktualizowanie pikseli w p5.Graphics
+        combinedTexture.updatePixels(); // Zaktualizowanie pikseli w combinedTexture
     }, 100);
 }
 
@@ -70,8 +71,8 @@ function draw() {
     rotateZ(PI);
 
     // Nakładanie tekstury na model 3D
-    if (combinedTexture instanceof p5.Graphics) {
-        texture(combinedTexture);
+    if (combinedTexture) {
+        texture(combinedTexture); // Nakładanie tekstury na model
     } else {
         noTexture();
     }
