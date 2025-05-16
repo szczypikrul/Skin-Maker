@@ -15,7 +15,7 @@
   <div style="display: flex; justify-content: space-between; padding: 20px;">
     <!-- Podgląd 3D modelu -->
     <div>
-      <h3>Model 3D</h3>
+      <h3>Model 4D</h3>
       <div id="p5Canvas"></div>
     </div>
 
@@ -88,23 +88,22 @@
 
           const canvasDataURL = canvasEl.toDataURL('image/png');
 
+          // Załaduj obraz z canvas jako teksturę
           loadImage(canvasDataURL, (img) => {
-            generatedTexture = createGraphics(256, 256, WEBGL);
+            // Przypisz teksturę bezpośrednio
+            generatedTexture = img;
 
-            // uzyskaj WebGL kontekst
-            const gl = generatedTexture._renderer.GL;
-            const tex = generatedTexture._renderer.getTexture(img);
+            // Uzyskaj WebGL kontekst i teksturę
+            const gl = _renderer.GL;
+            const tex = _renderer.getTexture(generatedTexture);
 
-            // ustaw NEAREST filtrację
+            // Ustaw NEAREST interpolację (ostra tekstura)
             gl.bindTexture(gl.TEXTURE_2D, tex.glTex);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-
-            // narysuj teksturę, by p5 ją zarejestrował
-            generatedTexture.texture(img);
-            generatedTexture.plane(256);
           });
 
+          // Uaktywnij link do pobrania połączonej tekstury
           const downloadLink = document.getElementById('download');
           downloadLink.href = canvasDataURL;
           downloadLink.style.display = 'inline';
