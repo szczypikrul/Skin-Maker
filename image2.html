@@ -1,115 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>3D Model with Sharp Combined Texture</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
-  <style>
-    canvas#canvas {
-      border: 1px solid black;
-      image-rendering: pixelated;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model with Sharp Combined Textures</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-  <div style="display: flex; justify-content: space-between; padding: 20px;">
-    <!-- Podgląd 3D modelu -->
-    <div>
-      <h3>Model 4D</h3>
-      <div id="p5Canvas"></div>
+    <div style="display: flex; justify-content: space-between; padding: 20px;">
+        <!-- Sekcja wyboru i podglądu grafiki -->
+        <div>
+            <h3>Połącz Grafiki</h3>
+            <label for="list1">Wybierz pierwszą grafikę:</label>
+            <select id="list1">
+                <option value="img/steve.png">Grafika 1</option>
+                <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
+            </select>
+            <br><br>
+            <label for="list2">Wybierz drugą grafikę:</label>
+            <select id="list2">
+                <option value="img/steve.png">Grafika 1</option>
+                <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
+            </select>
+            <br><br>
+            <button id="combine">Połącz grafiki</button>
+            <br><br>
+            <a id="download" style="display: none;" download="combined_texture.png">Pobierz obraz</a>
+            <br><br>
+            <canvas id="canvas" width="256" height="256"></canvas>
+        </div>
+
+        <!-- Podgląd 3D modelu -->
+        <div>
+            <h3>Model 5D</h3>
+            <div id="3dModel"></div>
+        </div>
     </div>
 
-    <!-- Sekcja wyboru i podglądu grafiki -->
-    <div>
-      <h3>Połącz Grafiki</h3>
-      <label for="list1">Wybierz pierwszą grafikę:</label>
-      <select id="list1">
-        <option value="img/steve.png">Grafika 1</option>
-        <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
-      </select>
-      <br><br>
-      <label for="list2">Wybierz drugą grafikę:</label>
-      <select id="list2">
-        <option value="img/steve.png">Grafika 1</option>
-        <option value="img/jaskiniowiec_skin.png">Grafika 2</option>
-      </select>
-      <br><br>
-      <button id="combine">Połącz grafiki</button>
-      <br><br>
-      <a id="download" style="display: none;" download="combined_texture.png">Pobierz obraz</a>
-      <br><br>
-      <canvas id="canvas" width="256" height="256"></canvas>
-    </div>
-  </div>
+    <script>
+        let scene, camera, renderer, model;
+        let texture1, texture2;
+        let combinedTexture;
 
-  <script>
-    let mario;
-    let generatedTexture;
-    const canvasEl = document.getElementById('canvas');
-    const ctx = canvasEl.getContext('2d');
+        // Setup Three.js
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('3dModel').appendChild(renderer.domElement);
 
-    function preload() {
-      mario = loadModel('model/model.obj', true);
-    }
+            // Model 3D (przykładowy sześcian)
+            const geometry = new THREE.BoxGeometry();
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            model = new THREE.Mesh(geometry, material);
+            scene.add(model);
 
-    function setup() {
-      const canvas = createCanvas(400, 400, WEBGL);
-      canvas.parent('p5Canvas');
-      noStroke();
-    }
+            camera.position.z = 5;
+        }
 
-    function draw() {
-      background(220);
-      orbitControl();
-      rotateX(PI);
+        // Renderowanie sceny
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
 
-      if (generatedTexture) {
-        texture(generatedTexture);
-      }
-      model(mario);
-    }
+        // Załaduj teksturę
+        function loadTexture(imagePath) {
+            const loader = new THREE.TextureLoader();
+            const texture = loader.load(imagePath);
+            texture.minFilter = THREE.NearestFilter; // Wymusza ostrą teksturę
+            texture.magFilter = THREE.NearestFilter; // Wymusza ostrą teksturę
+            return texture;
+        }
 
-    document.getElementById('combine').addEventListener('click', () => {
-      const list1Value = document.getElementById('list1').value;
-      const list2Value = document.getElementById('list2').value;
+        // Funkcja do łączenia dwóch grafik na canvasie
+        function combineTextures() {
+            const canvasEl = document.getElementById('canvas');
+            const ctx = canvasEl.getContext('2d');
 
-      const img1 = new Image();
-      const img2 = new Image();
+            const img1 = new Image();
+            const img2 = new Image();
 
-      img1.src = list1Value;
-      img2.src = list2Value;
+            const list1Value = document.getElementById('list1').value;
+            const list2Value = document.getElementById('list2').value;
 
-      img1.onload = () => {
-        ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
-        ctx.drawImage(img1, 0, 0, canvasEl.width, canvasEl.height);
+            img1.src = list1Value;
+            img2.src = list2Value;
 
-        img2.onload = () => {
-          ctx.drawImage(img2, 0, 0, canvasEl.width, canvasEl.height);
+            img1.onload = () => {
+                ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+                ctx.drawImage(img1, 0, 0, canvasEl.width, canvasEl.height);
 
-          const canvasDataURL = canvasEl.toDataURL('image/png');
+                img2.onload = () => {
+                    ctx.drawImage(img2, 0, 0, canvasEl.width, canvasEl.height);
 
-          // Załaduj obraz z canvas jako teksturę
-          loadImage(canvasDataURL, (img) => {
-            // Przypisz teksturę bezpośrednio
-            generatedTexture = img;
+                    // Konwertuj canvas na teksturę
+                    const combinedDataURL = canvasEl.toDataURL('image/png');
+                    combinedTexture = loadTexture(combinedDataURL);
 
-            // Uzyskaj WebGL kontekst i teksturę
-            const gl = _renderer.GL;
-            const tex = _renderer.getTexture(generatedTexture);
+                    // Zastosuj połączoną teksturę na model
+                    model.material.map = combinedTexture;
+                    model.material.needsUpdate = true;
 
-            // Ustaw NEAREST interpolację (ostra tekstura)
-            gl.bindTexture(gl.TEXTURE_2D, tex.glTex);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-          });
+                    // Uaktywnij przycisk pobierania
+                    const downloadLink = document.getElementById('download');
+                    downloadLink.href = combinedDataURL;
+                    downloadLink.style.display = 'inline';
+                };
+            };
+        }
 
-          // Uaktywnij link do pobrania połączonej tekstury
-          const downloadLink = document.getElementById('download');
-          downloadLink.href = canvasDataURL;
-          downloadLink.style.display = 'inline';
-        };
-      };
-    });
-  </script>
+        // Nasłuchuj kliknięcia przycisku "Połącz grafiki"
+        document.getElementById('combine').addEventListener('click', combineTextures);
+
+        // Inicjalizacja i animacja
+        init();
+        animate();
+    </script>
 </body>
 </html>
