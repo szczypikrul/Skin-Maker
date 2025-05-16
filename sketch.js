@@ -1,4 +1,4 @@
-
+/*
 let mario;
 let marioUV;
 let tex;
@@ -28,6 +28,38 @@ function draw() {
   // Renderowanie modelu z teksturą
   texture(marioUV); // Nałóż teksturę na model
   model(mario);     // Wyświetl model
+}
+*/
+let mario; 
+let currentTexture;
+let imgPath = 'img/steve.png'; // Domyślna tekstura
+
+function preload() {
+  mario = loadModel('model/model.obj', true);
+  currentTexture = loadImage(imgPath);
+}
+
+function setup() {
+  createCanvas(400, 400, WEBGL);
+  noStroke();
+
+  // Nasłuchiwanie zmian w wyborze pliku graficznego
+  const list1 = document.getElementById('list1');
+  list1.addEventListener('change', () => {
+    imgPath = list1.value;
+    currentTexture = loadImage(imgPath); // załaduj nową teksturę
+  });
+}
+
+function draw() {
+  background(220);
+  orbitControl();
+  rotateX(PI);
+
+  if (currentTexture) {
+    texture(currentTexture);
+  }
+  model(mario);
 }
 
 
