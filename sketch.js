@@ -30,25 +30,23 @@ function draw() {
   model(mario);     // Wyświetl model
 }
 */
-let mario; 
-let currentTexture;
-let imgPath = 'img/steve.png'; // Domyślna tekstura
+let mario;
+let dynamicCanvas;
+let dynamicTexture;
 
 function preload() {
-  mario = loadModel('model/model.obj', true);
-  currentTexture = loadImage(imgPath);
+  mario = loadModel('model/model.obj', true); // Ładuj model
 }
 
 function setup() {
   createCanvas(400, 400, WEBGL);
   noStroke();
 
-  // Nasłuchiwanie zmian w wyborze pliku graficznego
-  const list1 = document.getElementById('list1');
-  list1.addEventListener('change', () => {
-    imgPath = list1.value;
-    currentTexture = loadImage(imgPath); // załaduj nową teksturę
-  });
+  // Pobierz referencję do HTML canvas (z łączenia grafik)
+  dynamicCanvas = document.getElementById('canvas');
+
+  // Ustaw początkową teksturę jako grafikę z tego canvasu
+  dynamicTexture = createGraphics(128, 128);
 }
 
 function draw() {
@@ -56,9 +54,10 @@ function draw() {
   orbitControl();
   rotateX(PI);
 
-  if (currentTexture) {
-    texture(currentTexture);
-  }
+  // Skopiuj zawartość HTML canvas do p5.Graphics
+  dynamicTexture.drawingContext.drawImage(dynamicCanvas, 0, 0);
+
+  texture(dynamicTexture);
   model(mario);
 }
 
