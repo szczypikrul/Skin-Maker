@@ -1,1 +1,162 @@
-<meta http-equiv="refresh" content="0; url=https://discord.gg/sFkZvyhzFQ">
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Serwer Minecraft + Discord | twojadomena.pl</title>
+<meta name="description" content="Dołącz do naszego serwera Minecraft! Survival, eventy, paczka modów i społeczność.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Przekierowanie po 6 sekundach -->
+<meta http-equiv="refresh" content="6; url=https://discord.gg/sFkZvyhzFQ">
+
+<!-- Pixel font -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+  /* Animowane tło: scrolling pixel lava */
+  @keyframes lavaMove {
+    0% {background-position: 0 0;}
+    100% {background-position: 200px 200px;}
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Press Start 2P', cursive;
+    color: #a3e635;
+    text-align: center;
+    background: url('https://i.imgur.com/OY2vV7P.png') repeat;
+    animation: lavaMove 20s linear infinite;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 30px;
+    background: rgba(0,0,0,0.6);
+    border: 3px solid #22c55e;
+    box-shadow: 0 0 30px #22c55e;
+    border-radius: 12px;
+  }
+
+  h1 {
+    font-size: 22px;
+    color: #4ade80;
+    text-shadow: 2px 2px #000;
+  }
+
+  p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #d9f99d;
+  }
+
+  .ip {
+    margin: 20px 0;
+    padding: 15px;
+    background: #020617;
+    border: 2px dashed #22c55e;
+    display: inline-block;
+    font-size: 12px;
+    color: #4ade80;
+  }
+
+  .btn {
+    display: inline-block;
+    margin: 10px 10px 0 10px;
+    padding: 15px 20px;
+    background: #22c55e;
+    color: #022c22;
+    text-decoration: none;
+    font-size: 12px;
+    border: 2px solid #16a34a;
+    box-shadow: 0 0 10px #22c55e;
+    transition: 0.2s;
+  }
+
+  .btn:hover {
+    background: #16a34a;
+    box-shadow: 0 0 20px #4ade80;
+  }
+
+  .footer {
+    margin-top: 15px;
+    font-size: 10px;
+    color: #86efac;
+  }
+
+  /* Status serwera */
+  .status {
+    margin: 20px 0;
+    font-size: 12px;
+    padding: 10px;
+    border: 2px solid #16a34a;
+    border-radius: 8px;
+    display: inline-block;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .online { color: #4ade80; }
+  .offline { color: #f87171; }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>⛏️ SERWER MINECRAFT</h1>
+
+  <p>Dołącz do naszej ekipy i graj na epickim serwerze survival!</p>
+  <p>Eventy, paczka modów i aktywna społeczność czekają 🚀</p>
+
+  <div class="ip">
+    🎮 IP: twojadomena.pl
+  </div>
+
+  <div id="serverStatus" class="status">
+    🔄 Sprawdzanie statusu...
+  </div>
+
+  <br>
+
+  <a class="btn" href="https://discord.gg/twojlink">
+    👉 DOŁĄCZ NA DISCORD
+  </a>
+
+  <a class="btn" href="https://www.curseforge.com/minecraft/modpacks/twojmodpack">
+    📦 PACZKA MODÓW
+  </a>
+
+  <div class="footer">
+    Za chwilę zostaniesz przekierowany...
+  </div>
+</div>
+
+<script>
+  // --- Sprawdzanie statusu serwera Minecraft ---
+  const statusEl = document.getElementById('serverStatus');
+
+  // Tutaj wpisz IP serwera i port (domyślnie 25565)
+  const serverIP = "twojadomena.pl";
+  const serverPort = 25565;
+
+  fetch(`https://api.mcsrvstat.us/2/${serverIP}:${serverPort}`)
+    .then(response => response.json())
+    .then(data => {
+      if(data.online) {
+        statusEl.innerHTML = `🟢 Serwer online - ${data.players.online}/${data.players.max} graczy`;
+        statusEl.classList.add('online');
+      } else {
+        statusEl.innerHTML = `🔴 Serwer offline`;
+        statusEl.classList.add('offline');
+      }
+    })
+    .catch(err => {
+      statusEl.innerHTML = `⚠ Nie udało się pobrać statusu`;
+      statusEl.classList.add('offline');
+      console.error(err);
+    });
+</script>
+
+</body>
+</html>
